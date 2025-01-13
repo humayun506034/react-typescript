@@ -72,6 +72,9 @@ const taskSlice = createSlice({
         }
       }
     },
+    updateFilter: (state, action:PayloadAction<"all" | "high" | "medium" | "low">) => {
+      state.filter = action.payload;
+    },
   },
 });
 
