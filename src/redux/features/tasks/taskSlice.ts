@@ -7,11 +7,23 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-  tasks: [],
+  tasks: [
+    {
+      id: "bHETpehgvguIdg3RHPG5B",
+      isCompleted: false,
+      title: "Python Problem Solving",
+      description: "If you solve the error you win a gift.",
+      priority: "high",
+      dueDate: "2025-01-20T18:00:00.000Z",
+    },
+  ],
   filter: "all",
 };
 
-export type DraftTask = Pick<ITask, "title" | "description" | "dueDate" | "priority">;
+export type DraftTask = Pick<
+  ITask,
+  "title" | "description" | "dueDate" | "priority"
+>;
 const createTask = (taskData: DraftTask): ITask => {
   return {
     id: nanoid(),
@@ -27,6 +39,39 @@ const taskSlice = createSlice({
       const taskData = createTask(action.payload);
       state.tasks.push(taskData);
     },
+    toggleCompleteState: (state, action: PayloadAction<string>) => {
+      // console.log(action);
+      state.tasks.forEach((task) => {
+        if (task.id === action.payload) {
+          task.isCompleted = !task.isCompleted;
+        }
+      });
+    },
+    deleteTask: (state, action: PayloadAction<string>) => {
+      state.tasks = state.tasks.filter((task) => task.id !== action.payload);
+    },
+    updateTask: (state, action: PayloadAction<Partial<ITask>>) => {
+      const { id, ...others } = action.payload;
+
+      // Find the task to be updated
+      const matchTask = state.tasks.find((task) => task.id === id);
+
+      if (matchTask) {
+        // Convert Proxy object to normal object (if necessary)
+        const task = JSON.parse(JSON.stringify(matchTask));
+
+        // Update the task properties
+        Object.assign(task, others);
+
+        console.log("Updated task:", task);
+
+        // Find the index of the task and update it in the state
+        const taskIndex = state.tasks.findIndex((task) => task.id === id);
+        if (taskIndex !== -1) {
+          state.tasks[taskIndex] = task;
+        }
+      }
+    },
   },
 });
 
@@ -37,6 +82,7 @@ export const selectFilter = (state: RootState) => {
   return state.todo.filter;
 };
 
-export const { addTask } = taskSlice.actions;
+export const { addTask, toggleCompleteState, deleteTask, updateTask } =
+  taskSlice.actions;
 
 export default taskSlice.reducer;
