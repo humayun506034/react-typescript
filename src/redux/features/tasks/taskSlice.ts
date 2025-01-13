@@ -63,7 +63,7 @@ const taskSlice = createSlice({
         // Update the task properties
         Object.assign(task, others);
 
-        console.log("Updated task:", task);
+        // console.log("Updated task:", task);
 
         // Find the index of the task and update it in the state
         const taskIndex = state.tasks.findIndex((task) => task.id === id);
@@ -72,20 +72,37 @@ const taskSlice = createSlice({
         }
       }
     },
-    updateFilter: (state, action:PayloadAction<"all" | "high" | "medium" | "low">) => {
+    updateFilter: (
+      state,
+      action: PayloadAction<"all" | "high" | "medium" | "low">
+    ) => {
       state.filter = action.payload;
     },
   },
 });
 
 export const selectTasks = (state: RootState) => {
-  return state.todo.tasks;
+  const filter = state.todo.filter;
+  if (filter === "low") {
+    return state.todo.tasks.filter((task) => task.priority === "low");
+  } else if (filter === "medium") {
+    return state.todo.tasks.filter((task) => task.priority === "medium");
+  } else if (filter === "high") {
+    return state.todo.tasks.filter((task) => task.priority === "high");
+  } else {
+    return state.todo.tasks;
+  }
 };
 export const selectFilter = (state: RootState) => {
   return state.todo.filter;
 };
 
-export const { addTask, toggleCompleteState, deleteTask, updateTask } =
-  taskSlice.actions;
+export const {
+  addTask,
+  toggleCompleteState,
+  deleteTask,
+  updateTask,
+  updateFilter,
+} = taskSlice.actions;
 
 export default taskSlice.reducer;
