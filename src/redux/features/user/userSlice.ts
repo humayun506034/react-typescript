@@ -29,7 +29,7 @@ const createUser = (data: DraftUser): IUser => {
 };
 
 const userSlice = createSlice({
-  name: "counter",
+  name: "user",
   initialState,
   reducers: {
     addUser: (state, action: PayloadAction<DraftUser>) => {
