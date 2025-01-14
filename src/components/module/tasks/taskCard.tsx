@@ -3,15 +3,19 @@ import {
   deleteTask,
   toggleCompleteState,
 } from "@/redux/features/tasks/taskSlice";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { ITask } from "@/types";
 import { UpdateTaskModal } from "./updateTaskModal";
+import { selectUser } from "@/redux/features/user/userSlice";
 
 interface IProps {
   task: ITask;
 }
 
 const TaskCard = ({ task }: IProps) => {
+  const users = useAppSelector(selectUser);
+  const assignUser = users.find((user) => user.id === task.assignedTo);
+  // console.log("assigne user", assignUser);
   const dispatch = useAppDispatch();
   return (
     <div className="mx-7 mb-5">
@@ -39,7 +43,7 @@ const TaskCard = ({ task }: IProps) => {
             </button>
 
             <input
-              checked={task.isCompleted}
+              defaultChecked={task.isCompleted}
               type="checkbox"
               className="w-4 h-4 accent-green-500"
               aria-label="Mark as complete"
@@ -48,6 +52,7 @@ const TaskCard = ({ task }: IProps) => {
             <UpdateTaskModal id={task.id}></UpdateTaskModal>
           </div>
         </div>
+        <p>Assigned To : {assignUser? assignUser.name : "No One"}</p>
         <p className="mt-2">{task.description}</p>
       </div>
     </div>
