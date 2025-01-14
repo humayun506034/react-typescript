@@ -22,12 +22,7 @@ const Navbar: React.FC = () => {
               >
                 Home
               </Link>
-              <Link
-                to={"/users"}
-                className="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
-              >
-                Users
-              </Link>
+             
               <div>
               <ModeToggle></ModeToggle>
             </div>
@@ -76,12 +71,7 @@ const Navbar: React.FC = () => {
             >
               Home
             </Link>
-            <Link
-              to={"/users"}
-              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-700"
-            >
-              Users
-            </Link>
+           
             
           </div>
         </div>

@@ -31,9 +31,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { addTask, DraftTask } from "@/redux/features/tasks/taskSlice";
-import { selectUser } from "@/redux/features/user/userSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
+
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
@@ -41,13 +39,9 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 export function AddTaskModal() {
   const [open, setOpen] = useState(false);
-  const dispatch = useAppDispatch();
-  const users = useAppSelector(selectUser);
   const form = useForm();
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    dispatch(addTask(data as DraftTask));
-    setOpen(false);
-    form.reset();
+   
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -112,32 +106,7 @@ export function AddTaskModal() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="assignedTo"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Assign To</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Assign To" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {users.map((user) => (
-                        <SelectItem value={user?.id} key={user?.id}>
-                          {user?.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
+           
             <FormField
               control={form.control}
               name="dueDate"
